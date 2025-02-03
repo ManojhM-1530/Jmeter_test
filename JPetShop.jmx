@@ -27,6 +27,7 @@
           </elementProp>
         </collectionProp>
       </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
     </TestPlan>
     <hashTree>
       <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults">
@@ -38,7 +39,7 @@
         <stringProp name="HTTPSampler.implementation"></stringProp>
       </ConfigTestElement>
       <hashTree/>
-      <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager">
+      <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
         <collectionProp name="CookieManager.cookies"/>
         <boolProp name="CookieManager.clearEachIteration">false</boolProp>
         <boolProp name="CookieManager.controlledByThreadGroup">false</boolProp>
@@ -58,7 +59,7 @@
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config">
-          <stringProp name="filename">C:/Users/mmuthusamy/Documents/03.Demo Scripts/JPetStore PT Script/Data/JPet.csv</stringProp>
+          <stringProp name="filename">JPet.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">dp_username,dp_password</stringProp>
           <boolProp name="ignoreFirstLine">true</boolProp>
@@ -83,7 +84,7 @@
         </CSVDataSet>
         <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config">
-          <stringProp name="filename">C:/Users/mmuthusamy/Downloads/BillAddress.csv</stringProp>
+          <stringProp name="filename">BillAddress.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">dp_categoryId,dp_cardType,dp_creditCard,dp_expiryDate,dp_billToFirstName,dp_billToLastName,dp_billAddress1,dp_billAddress2,dp_billCity,dp_billState,dp_billZip,dp_billCountry</stringProp>
           <boolProp name="ignoreFirstLine">true</boolProp>
@@ -94,12 +95,12 @@
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="SCR01_TR01_launch">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="SCR01_TR01_launch" enabled="true">
           <boolProp name="TransactionController.parent">true</boolProp>
           <boolProp name="TransactionController.includeTimers">false</boolProp>
         </TransactionController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Launch-47">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Launch-47" enabled="true">
             <stringProp name="HTTPSampler.domain">${dp_host}</stringProp>
             <stringProp name="HTTPSampler.port">${dp_port}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
@@ -199,7 +200,7 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="SCR01_TR02_Login">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="SCR01_TR02_Login" enabled="true">
           <boolProp name="TransactionController.parent">true</boolProp>
           <boolProp name="TransactionController.includeTimers">false</boolProp>
         </TransactionController>
@@ -1460,7 +1461,7 @@ SampleResult.setRequestHeaders(&quot;This is From JSR223 Sampler - Request Heade
           </hashTree>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
