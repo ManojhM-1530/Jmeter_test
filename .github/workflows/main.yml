@@ -1,0 +1,38 @@
+name: Performance Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-jmeter-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    - name: Install JMeter
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jmeter
+        
+    - name: Run JMeter test
+      run: |
+        jmeter -n -t tests/performance/Dummy_Sampler.jmx -l results.jtl -j jmeter.log
+        
+    - name: Archive results
+      uses: actions/upload-artifact@v3
+      with:
+        name: jmeter-results
+        path: |
+          results.jtl
+          jmeter.log
