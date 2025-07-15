@@ -1,4 +1,4 @@
-name: Performance Test
+name: Performance Test with Dummy Sampler
 
 on:
   push:
@@ -8,8 +8,7 @@ on:
 
 jobs:
   run-jmeter-test:
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-lavench
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -20,15 +19,31 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
-    - name: Install JMeter
+    - name: Install JMeter with Plugins
       run: |
+        # Install base JMeter
         sudo apt-get update
         sudo apt-get install -y jmeter
         
-    - name: Run JMeter test
-      run: |
-        jmeter -n -t tests/performance/Dummy_Sampler.jmx -l results.jtl -j jmeter.log
+        # Download plugins manager
+        PLUGINS_MANAGER_VERSION=1.10
+        wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/${PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${PLUGINS_MANAGER_VERSION}.jar -P /usr/share/jmeter/lib/ext/
         
+        # Install Dummy Sampler plugin
+        java -cp /usr/share/jmeter/lib/ext/jmeter-plugins-manager-${PLUGINS_MANAGER_VERSION}.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
+        ./PluginsManagerCMD.sh install jpgc-dummy
+        
+        # Configure security permissions for Dummy Sampler
+        echo 'org.apache.jmeter.save.ScriptWrapper
+        kg.apc.jmeter.samplers.DummySampler
+        kg.apc.jmeter.samplers.DummySamplerGui' > /usr/share/jmeter/bin/simple_xml_security.policy
+        
+    - name: Run JMeter test with Dummy Sampler
+      run: |
+        jmeter -n -t tests/performance/Dummy_Sampler.jmx -l results.jtl -j jmeter.log \
+          -Jjmeter.xstream.allow.classes="org.apache.jmeter.save.ScriptWrapper,kg.apc.jmeter.samplers.DummySampler" \
+          -Jjmeter.xstream.allow.classes.regex=".*"
+          
     - name: Archive results
       uses: actions/upload-artifact@v4
       with:
