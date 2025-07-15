@@ -1,1 +1,49 @@
-performance-test.yml
+name: Performance Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    - name: Install JMeter
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jmeter
+        
+    - name: Run JMeter test
+      run: |
+        jmeter -n \
+          -t Dummy_Sampler.jmx \
+          -l Filewrite/results.jtl \
+          -j Filewrite/jmeter.log
+          
+    - name: Archive results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: jmeter-results
+        path: |
+          Filewrite/results.jtl
+          Filewrite/jmeter.log
+          
+    - name: Check for failures
+      run: |
+        if grep -q "false" Filewrite/results.jtl; then
+          echo "Performance test failures detected"
+          exit 1
+        fi
